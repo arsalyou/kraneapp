@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useEffect, useState } from "react";
+import ScoreList from "./components/ListView";
+import axios from "axios";
 
 function App() {
+  const [scoreList, setScoreList] = useState([]);
+  useEffect(() => {
+    axios.get("/user/score").then((response) => {
+      //console.log(response.data);
+      setScoreList(response.data);
+    });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      style={{
+        margin: 30,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <h3> Top Ten Players</h3>
+      <ScoreList scoreList={scoreList} />
     </div>
   );
 }
